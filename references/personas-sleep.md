@@ -1,3 +1,5 @@
+> This is a Korean-context example persona set for a sleep app (fictional people); duplicate it and rewrite it for your own domain, keeping behavior context, current alternatives, and constraints at the center, and treat every answer these personas give as a Synthetic persona response.
+
 # 수면관리 도메인 FGI 페르소나 템플릿 (예시)
 
 수면 개선 웨어러블·앱 도메인용 합성 페르소나 8명 예시. `/fgi sleep <자극물>` 호출 시 자동 로드. 모더레이터가 자극물 성격에 맞춰 N명 추천, 사용자가 조정. **이 파일을 복제해 자기 도메인 페르소나 세트를 만드세요.**

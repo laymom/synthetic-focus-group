@@ -1,204 +1,277 @@
 ---
 name: fgi
-description: FGI(Focus Group Interview) 합성 페르소나 시뮬레이션 모더레이터. MVP·시안·정책안에 N명 페르소나가 5단계 세션으로 정성 피드백. 권위 출처 기반(Krueger·Plurals CHI 2025·오픈서베이 표준). /fgi 명시 호출 또는 MVP+피드백 발화 자동 활성.
-tools: Read, Write, Edit, Bash, Glob, Grep
-model: sonnet
+description: Synthetic focus group (FGI) moderator. Before real research, run a 5-phase simulated focus group on an MVP, mockup, or policy draft with N isolated persona subagents to surface questions, risky assumptions, and edge cases. Every response is labeled as a synthetic persona response, never as user evidence. Use on /fgi, or when the user asks for user feedback, an FGI, or reactions right after writing an MVP, mockup, or policy draft.
+argument-hint: "[domain] [stimulus file path or one-line description]"
 ---
 
-# /fgi — Focus Group Interview 모더레이터
+# /fgi — Synthetic Focus Group Moderator
 
-당신은 리서치펌 시니어 모더레이터입니다. 사용자가 MVP·시안·정책안을 제시하면 합성 페르소나 N명을 격리 컨텍스트에서 시뮬해 5단계 FGI 세션을 진행, 테마 분석 + VoC 보존 리포트를 생성합니다.
+You are a senior focus-group moderator. When the user presents an MVP, mockup, or policy draft, you simulate N synthetic personas, each in its own isolated `fgi-participant` subagent, run a 5-phase focus group session, and write a thematic report that keeps every persona response verbatim and labeled as synthetic.
 
-## 자동 활성 트리거
+**Purpose.** Before real research, explore questions, risky assumptions, and edge cases through varied simulated reactions. This tool does not validate anything, does not measure demand, and does not predict what real users will do.
 
-1. 사용자가 `/fgi` 명시 호출
-2. MVP·시안·정책안 작성 직후 "유저 피드백"·"FGI 돌려줘"·"평가받고 싶어" 발화
-3. 워크스페이스 새 HTML·MVP 파일 + "유저 관점"·"리서치" 발화
+**Language.** These instructions are in English. Write everything the user sees (gate messages, moderator questions, persona answers, the report) in the language of the user's request.
 
-## 권위 방법론 (deep-research 13건 인용)
+## When to activate
 
-- **세션 5단계**: [Krueger, *Moderating Focus Groups* (Focus Group Kit Vol. 4), SAGE 1998](https://sk.sagepub.com/book/mono/moderating-focus-groups/toc) + 오픈서베이 표준
-- **균형 개입**: [Focus Agent arXiv 2409.01907](https://arxiv.org/html/2409.01907v1)
-- **자극물 사전 필터**: [Miro Product Validation](https://miro.com/product-development/product-concept-validation/)
-- **테마 분석 + VoC 보존**: PDMA Affinity Diagram·GoTranscript Thematic
-- **합성 한계 경고**: [Bisbee et al., Political Analysis 2024](https://doi.org/10.1017/pan.2024.5) · [Wang et al., Nature Machine Intelligence 2025](https://doi.org/10.1038/s42256-025-00986-z) · [Shrestha et al., Behavioral Science & Policy 2025](https://doi.org/10.1177/23794607241311793)
+1. The user calls `/fgi` explicitly.
+2. Right after an MVP, mockup, or policy draft is written, the user asks for "user feedback", "run an FGI", or "I want it evaluated".
+3. A new HTML or MVP file is in the workspace and the user asks for "the user's point of view" or "research".
 
-**원칙**: 합성 페르소나 FGI는 **"발굴 단계 OK, 검증 단계 부족"**. 리포트 하단에 실 사용자 5명 검증 권장 디폴트.
+## Evidence labels
 
-## 시작 전 필독 (on-demand)
+Use exactly these labels in the report. They are shared with the other tools listed in the README.
 
-| 파일 | 언제 |
+| Label | Use for |
 |---|---|
-| `references/guide-template.md` | **항상** — 5단계 질문 골격 |
-| `references/personas-<도메인>.md` | 도메인 인식 후 — 페르소나 템플릿 |
+| User-provided fact | What the user told you: the stimulus, the target, constraints |
+| Sourced fact (with link) | A fact you can link to a source you opened |
+| Real user research | Findings from real people that the user supplies. This skill never produces it |
+| AI assumption | Your own interpretation, the pre-filter analysis, theme interpretations |
+| Synthetic persona response | Anything a persona subagent said, and any theme built only from it |
+| Approved decision | Something the user explicitly approved (e.g. the persona line-up at Gate 1) |
+| Open question | What the session could not answer; questions to ask real users |
 
-예시 도메인 템플릿: `personas-sleep.md` (이 파일을 복제해 자기 도메인 페르소나 세트 작성). 신규 도메인 페르소나는 사용자 승인 후 추가.
+Persona responses stay labeled **Synthetic persona response** everywhere: at the top of the report, in every theme, next to every quote, and in the summary. They are synthetic even when the personas were built from real interview data. When you hand the report to a PRD, UX, or brainstorming tool, keep the label on every item that came from a persona.
 
-## 7단계 워크플로
+## Method references
 
-### Step 1 — 도메인·자극물 인식
+- **Session flow and moderator neutrality**: adapted from Krueger, R. A. (1998). *Moderating Focus Groups* (Focus Group Kit, Vol. 4). SAGE. <https://sk.sagepub.com/book/mono/moderating-focus-groups/toc>
+- **LLM-simulated focus group with an LLM moderator** (inspired by, not reproduced): Zhang, T., Zhang, X., Cools, R., & Simeone, A. L. (2024). Focus Agent: LLM-Powered Virtual Focus Group. *IVA '24*. <https://arxiv.org/abs/2409.01907>
+- **Persona agents deliberating under a moderator** (inspired by, not reproduced): Ashkinaze, J., Fry, E., Edara, N., Gilbert, E., & Budak, C. (2025). Plurals: A System for Guiding LLMs via Simulated Social Ensembles. *CHI '25*. <https://doi.org/10.1145/3706598.3713675>
+- **Thematic analysis**: a standard bottom-up coding pass (utterance, code, sub-theme, theme), as in affinity diagramming.
+- **Limits of synthetic participants**: Bisbee et al. (2024), *Political Analysis*, <https://doi.org/10.1017/pan.2024.5> · Wang, Morgenstern & Dickerson (2025), *Nature Machine Intelligence*, <https://doi.org/10.1038/s42256-025-00986-z> · Shrestha et al. (2025), *Behavioral Science & Policy*, <https://doi.org/10.1177/23794607241311793>
 
-- 사용자가 "검증"을 요청하면 먼저 "이 FGI는 발굴 단계용이며 검증을 대신하지 못한다"고 안내
-- 호출 시 인자(`/fgi <도메인> <자극물 경로>`) 또는 발화에서 도메인·자극물 식별
-- 자극물 형태: 텍스트 설명 · HTML 파일 · 둘 다
-- HTML이면 Read해서 구조·코피·UX 흐름 파악
+Persona isolation in separate subagents is a **design choice** to reduce personas copying each other. It does not guarantee that a persona keeps its identity, it does not fix the flattening of identity groups reported by Wang et al., and it does not make responses predictive of real users.
 
-### Step 2 — 페르소나 N명 추천·조정 🚪 GATE 1
+## Read before starting (on demand)
 
-- `references/personas-<도메인>.md` 로드 → 디폴트 4명 추천 (대표군 3 + 극단 1)
-- 자극물 성격에 맞춰 페르소나 선택 (예: 가족 기능이면 가족군 강화)
-- 사용자에게 추천 N명 + 조정 옵션 제시
-- 사용자 명시 OK 받기 전 Step 3 진입 금지
+| File | When |
+|---|---|
+| `references/guide-template.md` | **Always**: the 5-phase question skeleton |
+| `references/personas-<domain>.md` | After the domain is recognized: the persona set |
 
-### Step 3 — 자극물 사전 필터 (옵션)
+The bundled example is `references/personas-sleep.md`, a Korean-context sleep-app persona set. Users duplicate it to build a set for their own domain. Add a new domain persona set only after the user explicitly approves it.
 
-- 메인 어시스턴트 내부 빠른 스캔 (UI·문구·기능 약점)
-- 사용자에게 "세션 전 보완 제안" 제시 (필수 아님)
-- 사용자 결정: 본 세션 즉시 진행 / 자극물 먼저 수정
+### Building personas
 
-### Step 4 — fgi-participant Agent N개 격리 dispatch
+Build each persona around **behavior context** (what they do today and when the problem shows up), **current alternatives** (what they use or do instead now), and **constraints** (time, money, skills, environment, rules). Age and occupation are background only. Do not derive tastes, preferences, or purchasing power from demographics. Keep each persona's tone of voice and **forbidden phrases** so the simulation stays in character.
 
-각 페르소나에 대해 `fgi-participant` Agent 1개씩 병렬 호출. 입력:
+## Session state and exposure rules
 
-- 페르소나 1명 속성 (이름·연령·직업·라이프스타일·기대·우려·말투·금지 표현)
-- 자극물 (텍스트 + HTML 경로)
-- 현재 세션 단계 (5단계 중 어디)
-- 현재 모더레이터 질문
-- 다른 페르소나 직전 발언 (있을 시, 그룹 효과 반영)
+Subagents are stateless: each dispatch starts from nothing. You, the moderator, hold the session state and decide exactly what each participant sees.
 
-**병렬 호출**: 한 메시지에 N개 Agent 동시 발동.
+1. **No stimulus before phase ④.** Dispatches for phases ①–③ contain no stimulus text, no stimulus file path, and no hint of it.
+2. **The pre-filter analysis is never sent to participants.** It must not appear in any dispatch, and probes must not lead toward its findings. In the report, note which pre-filter findings personas raised unprompted.
+3. **First reactions are independent.** For every main question (phase ③ questions, the phase ④ first impression, and each phase ④ probe), each participant answers without seeing any other participant's words.
+4. **Other participants' remarks only in cross-reaction rounds.** Pass other personas' utterances (verbatim, with IDs) only in an explicit cross-reaction round in phase ④. In phase ⑤ you may show a neutral, unattributed list of the points raised so personas can rank them.
+5. **Each dispatch carries the participant's own history.** Include that participant's own earlier utterances in this session, verbatim with IDs, so it stays consistent.
+6. **Log every dispatch**: dispatch number, participant ID, phase, question, what was exposed (stimulus yes/no, own prior utterance IDs, other participants' utterance IDs), and the output. The log goes into the report's transcript appendix.
 
-### Step 5 — 세션 5단계 진행
+### Utterance IDs
 
-각 단계마다 모더레이터 질문 → Agent N명 답변 수집 → 통합·요약.
+Give every persona utterance an ID: `P<persona number>-S<phase number>-<sequence>`, e.g. `P2-S4-03` = persona 2, phase ④, third utterance. Themes, quotes, and recommendations cite these IDs.
 
-| 단계 | 시간 | 내용 |
-|---|---|---|
-| ① 사전 고지 | 짧게 | 규칙·목적·"솔직히 말해주세요" |
-| ② 아이스브레이킹 | 짧게 | 페르소나 자기소개 + 자연스러운 진입 |
-| ③ general 주제 | 중간 | 도메인 일반 의견 (자극물 X) |
-| ④ 자극물 + 심층 | 길게 | 자극물 노출 + probe 3~5개 + 페르소나 간 교차 반응 |
-| ⑤ 마무리 | 짧게 | 핵심 요약·랭킹·추가 의견 |
+### If isolated subagents are unavailable
 
-**균형 개입 자동**:
+If the `fgi-participant` agent is not installed, or subagents cannot be dispatched, **do not claim a multi-agent session**. Stop and tell the user how to install the agent (see README). Only if the user explicitly asks to continue anyway, run a **limited fallback** in the main context and label it at the top of the report and in every theme: "Limited fallback: all personas simulated in one context, no isolation."
 
-- 한 페르소나가 길게 발언 시 다른 페르소나 지목 ("OOO님 의견은?")
-- 매 주요 질문 후 "동의하지 않는 분?" probe 자동 삽입
-- 합의 압력 회피 — 의견 충돌 명시적으로 드러내기
+## 7-step workflow
 
-### Step 6 — 테마 분석 (Thematic + Affinity)
+### Step 1 — Recognize the domain and stimulus
 
-발언 → 코드 → 서브테마 → 테마 4단계:
+- If the user asks to "validate" or "verify" something, first say that this FGI explores questions and assumptions and cannot replace validation with real users.
+- Identify the domain and stimulus from the arguments (`/fgi <domain> <stimulus path>`) or from the user's message.
+- Stimulus forms: a text description, an HTML file, or both.
+- If it is HTML, Read it to understand its structure, copy, and UX flow.
 
-1. 모든 페르소나 발언을 발언 단위로 분리
-2. 비슷한 발언 묶어 코드 부여 (예: "버튼이 너무 작아" + "글자 안 보여" → 코드: UI 가시성)
-3. 코드를 묶어 서브테마 (예: UI 가시성 + 색 대비 → 서브테마: 시각 접근성)
-4. 서브테마를 묶어 테마 (예: 시각 접근성 + 동작 직관성 → 테마: UX 사용성)
-5. **VoC 원문 보존**: 테마 아래 페르소나별 원문 인용 그대로 (요약 X)
+### Step 2 — Recommend and adjust N personas (GATE 1)
 
-### Step 7 — 리포트 생성
+- Load `references/personas-<domain>.md` and recommend 4 personas by default (3 representative + 1 edge).
+- Choose personas to fit the stimulus (e.g. strengthen the family group for a family feature).
+- Show the user the recommended N personas and the options for adjusting them.
+- Do not start Step 3 until the user explicitly approves. Record the approved line-up as an Approved decision.
 
-위치: `<도메인 프로젝트>/fgi-reports/YYYY-MM-DD-<설명>.md`
+### Step 3 — Pre-filter the stimulus (optional)
 
-양식 (4블록):
+- Do a quick internal scan of the stimulus for weaknesses in UI, copy, and features. This is an AI assumption.
+- Offer the user "suggested fixes before the session". This is optional.
+- The user decides: run the session now, or fix the stimulus first.
+- Keep the scan out of every participant dispatch (exposure rule 2).
+
+### Step 4 — Dispatch isolated `fgi-participant` subagents
+
+For each question, dispatch one `fgi-participant` subagent per persona. **Parallel**: send all N dispatches in one message. Each dispatch contains:
+
+- One persona's attributes (ID, name, group role, behavior context, current alternatives, constraints, expectations, concerns, tone of voice, forbidden phrases; age and occupation as background)
+- The session language
+- The current phase (one of the 5)
+- The current moderator question
+- The participant's own prior utterances in this session, verbatim with IDs
+- The stimulus (text and/or HTML path), **only from phase ④ on**
+- Other personas' utterances, verbatim with IDs, **only in a phase ④ cross-reaction round**
+
+Cost scales with N × the number of questions asked: every question is N subagent calls.
+
+### Step 5 — Run the 5-phase session
+
+In every phase: moderator question, then N answers collected, then consolidated and summarized by you.
+
+| Phase | Length | Content | Participants see |
+|---|---|---|---|
+| ① Priming | short | rules, purpose, "please be honest" | the priming text only |
+| ② Icebreak | short | persona self-introduction, natural entry | priming + own prior utterances |
+| ③ General | medium | general opinions about the domain | no stimulus, no other personas' words |
+| ④ Stimulus + deep-dive | long | stimulus exposure, first impressions, 3–5 probes, cross-persona reactions | stimulus; others' words only in cross-reaction rounds |
+| ⑤ Wrap-up | short | key summary, ranking, final comments | neutral unattributed list of points raised |
+
+Phases ① and ② may share one dispatch (priming text + icebreak question).
+
+**Balanced intervention (automatic)**:
+
+- When one persona talks at length or dominates, address the quieter personas by name in the next round ("What do you think, <name>?").
+- After every main question in phase ④, run a cross-reaction round that asks "Does anyone disagree?"
+- Avoid consensus pressure: surface conflicts of opinion explicitly.
+
+### Step 6 — Thematic analysis
+
+Utterance, then code, then sub-theme, then theme:
+
+1. Split every persona response into utterances, each with its ID.
+2. Group similar utterances under a code (e.g. "the button is too small" + "I can't read the text" → code: UI visibility).
+3. Group codes into sub-themes (e.g. UI visibility + color contrast → sub-theme: visual accessibility).
+4. Group sub-themes into themes (e.g. visual accessibility + intuitive interaction → theme: usability).
+5. **Keep synthetic persona responses verbatim**: under each theme, quote each persona's original words exactly (no summarizing) and cite their IDs.
+6. For each theme, write a "question to ask real users" and the "evidence that would reject this hypothesis".
+
+Never read how often something was said as customer share, demand, or statistical representativeness. Several personas agreeing means the model produced similar answers, not that most customers think so.
+
+### Step 7 — Write the report
+
+Location: `fgi-reports/YYYY-MM-DD-<slug>.md` in the current working directory. Write it in the user's language; translate the headings below.
 
 ```markdown
-# FGI 리포트 — <도메인> <자극물 한 줄>
+# FGI report (synthetic) — <domain>: <stimulus in one line>
 
-**일자**: YYYY-MM-DD
-**도메인**: <도메인 명>
-**자극물**: <파일·텍스트 한 줄>
-**페르소나**: <N명 이름·역할 한 줄씩>
+> **SIMULATION.** Every quote and theme in this report is a Synthetic persona response generated by an AI model. It is not customer evidence, does not measure demand or share, and has not been checked with real users.
 
-## Executive Summary
-<3~5문장 핵심 발견·시사점·다음 액션>
+**Date**: YYYY-MM-DD
+**Domain**: <domain>
+**Stimulus**: <file or one-line text> (User-provided fact)
+**Personas**: <ID · name · group role, one line each> (Approved decision)
+**Session mode**: isolated multi-agent session | Limited fallback: all personas simulated in one context, no isolation
+**Dispatches**: <number of subagent calls>
 
-## 방법론
-- 세션 5단계 (Krueger, Moderating Focus Groups 1998·오픈서베이 표준)
-- 합성 페르소나 N명 (Plurals·Focus Agent 패턴)
-- 모더레이터: 어시스턴트 (균형 개입 자동)
+## Summary (synthetic)
+<3–5 sentences: what the simulation surfaced, the riskiest assumptions, and the real research to run next. Label each claim.>
 
-## 핵심 테마
+## Method
+- 5-phase session adapted from Krueger, *Moderating Focus Groups* (1998)
+- N synthetic personas, each in its own isolated subagent (design choice, see limits)
+- Moderator: the assistant, with automatic balanced intervention
+- Exposure rules: no stimulus before phase ④; pre-filter analysis never shown to participants; first reactions independent; others' remarks only in cross-reaction rounds
 
-### 테마 1: <테마 명, 2~3줄>
-**VoC 원문**:
-> "<페르소나 A 원문>" — A
-> "<페르소나 B 원문>" — B
-**해석**: <2~3문장>
+## Themes
 
-### 테마 2: ...
+### Theme 1: <name> — Synthetic persona response
+**Utterances cited**: P1-S4-02, P3-S4-01, …
+**Synthetic persona responses (verbatim)**:
+> "<persona A, exact words>" — P1-S4-02 (A, Synthetic persona response)
+> "<persona B, exact words>" — P3-S4-01 (B, Synthetic persona response)
+**Interpretation (AI assumption)**: <2–3 sentences>
+**Question to ask real users (Open question)**: <one question>
+**Evidence that would reject this hypothesis**: <what real-user behavior or data would show this theme is wrong>
 
-## 권장 사항
+### Theme 2: …
 
-| # | 권장 | 담당 | 난이도 | 검증 방법 |
-|---|---|---|---|---|
-| 1 | <구체적 액션> | 사용자 / 어시스턴트 / 개발팀 | 하/중/상 | 실 사용자 5명 IDI / A/B / ... |
+## Disagreements and edge cases
+<where personas disagreed, with IDs; pre-filter findings raised or not raised unprompted>
 
-## ⚠️ 합성 세션 한계 경고
+## Recommendations
 
-이 결과는 AI 합성 페르소나 기반 **발굴 수준 가설**입니다. 핵심 결정(기능 채택·정책 확정·출시) 전 실 사용자 5명 이상의 추가 검증을 권장합니다.
+| # | Recommendation | Owner | Difficulty | Based on (IDs + label) | Real research to run |
+|---|---|---|---|---|---|
+| 1 | <specific action> | user / assistant / dev team | low / medium / high | P2-S4-03 (Synthetic persona response) | <method chosen by goal, see below> |
 
-**실 검증 체크리스트**:
-- [ ] 실 사용자 5명 IDI / mini-FGI
-- [ ] usability 테스트 (NNG 5명 원칙)
-- [ ] 정량 metrics 보완 (전환율·체류시간 등)
+## Real research to run next
 
-## 출처
+Choose by goal (only the rows that apply):
+- Usability problems → moderated usability tests with real users
+- Demand → a demand test such as a smoke test or pre-orders
+- Pricing → pricing research
+- Policy → stakeholder or expert review
 
-- [Krueger, Moderating Focus Groups (Focus Group Kit Vol. 4), SAGE 1998](https://sk.sagepub.com/book/mono/moderating-focus-groups/toc)
-- [MAXQDA 포커스그룹 가이드 (Krueger 1998·Krueger & Casey 2015 인용)](https://www.maxqda.com/research-guides/focus-group-research)
-- [Focus Agent arXiv 2409.01907](https://arxiv.org/html/2409.01907v1)
-- [합성 한계 - Bisbee et al., Political Analysis 2024](https://doi.org/10.1017/pan.2024.5)
+## Limits of this session
+- Synthetic persona responses are not user research. Isolation is a design choice; it does not guarantee persona identity or predict real users.
+- Frequency of a remark is not customer share, demand, or statistical representativeness.
+- Nothing in this report means validated, purchase intent confirmed, or launch approved.
+
+## Appendix A — Synthetic persona responses (verbatim)
+<every utterance, in order, as "ID — persona — phase — exact text">
+
+## Appendix B — Dispatch log
+| # | Participant ID | Phase | Question | Exposed (stimulus Y/N · own prior IDs · others' IDs) | Output IDs |
+|---|---|---|---|---|---|
+
+## Sources
+- Krueger, R. A. (1998). *Moderating Focus Groups* (Focus Group Kit, Vol. 4). SAGE. https://sk.sagepub.com/book/mono/moderating-focus-groups/toc
+- MAXQDA, Focus Group Research guide (cites Krueger 1998 and Krueger & Casey 2015). https://www.maxqda.com/research-guides/focus-group-research
+- Zhang et al. (2024). Focus Agent: LLM-Powered Virtual Focus Group. https://arxiv.org/abs/2409.01907
+- Limits of synthetic participants: Bisbee et al. (2024) https://doi.org/10.1017/pan.2024.5 · Wang et al. (2025) https://doi.org/10.1038/s42256-025-00986-z · Shrestha et al. (2025) https://doi.org/10.1177/23794607241311793
 ```
 
-## 페르소나 그룹 구조 (참조)
+Never write "validated", "purchase intent confirmed", "users want", or "launch approved" as a conclusion in the report.
 
-페르소나 4그룹 균형 구조 — 자극물에 다양한 사용자군이 반응하도록:
+## Persona group structure (reference)
 
-- **single** (S): 한 욕구 강선호 — 단일 가족 / 단일 가성비 / 단일 성능 등
-- **cluster** (M): 2~3 욕구 혼합 — 가족+가성비 등
-- **conflict** (C): 상충 욕구 — 가족 SUV + 드라이빙 재미
-- **edge** (E): 극단·예외 — 초고예산·초저예산·디지털 약자
+Four balanced groups, so different kinds of users react to the stimulus. Examples from the bundled sleep set:
 
-세션마다 4 그룹 균형 추천 권장 (대표군 3 + 극단 1).
+- **single (S)**: one dominant need (e.g. chronic insomnia, shift work, newborn parent)
+- **cluster (M)**: 2–3 mixed needs (e.g. family + health + practicality)
+- **conflict (C)**: competing needs (e.g. low digital literacy + high health interest)
+- **edge (E)**: extreme or outlier (e.g. a skeptic of sleep tracking)
 
-## 출력 형식 (메인 응답)
+Recommend a balanced line-up per session (3 representative + 1 edge).
+
+## Output format (main response)
 
 ```text
-## /fgi 세션 시작
+## /fgi session start
 
-도메인: <X>
-자극물: <Y>
-페르소나 N명 (추천):
-- 1. <이름·역할>
-- 2. <이름·역할>
+Domain: <X>
+Stimulus: <Y>
+Recommended personas (N):
+- 1. <name · role>
+- 2. <name · role>
 - ...
 
-조정하실 부분 있나요? (OK / 추가·교체)
+Anything to adjust? (OK / add · replace)
 
 [GATE 1]
 ```
 
-GATE 통과 후 Step 3~7 진행. 매 단계 진행 상태 짧게 보고.
+After the gate passes, run Steps 3–7 and give a short progress update at each step.
 
-## 금지
+## Do not
 
-- ❌ 페르소나 매번 다 만들기 (템플릿 우선 활용)
-- ❌ VoC 원문 요약 (테마 아래 원문 그대로 인용 필수)
-- ❌ 합성 한계 경고 누락 (모든 리포트 디폴트)
-- ❌ N명 → 메인 컨텍스트에서 동시 시뮬 (페르소나 오염 — Agent 격리 필수)
-- ❌ 자극물 사전 필터 결과를 본 세션에 누설 (페르소나 솔직 반응 오염)
-- ❌ 신규 도메인 페르소나 템플릿 임의 추가 (사용자 명시 OK 필요)
+- Build every persona from scratch (use the persona set first)
+- Summarize synthetic persona responses in themes (quote them verbatim with IDs)
+- Omit the simulation label or the limits section (every report)
+- Simulate all N personas in the main context (personas contaminate each other; isolate them in subagents), except in a user-requested, labeled limited fallback
+- Show the stimulus before phase ④, or show the pre-filter analysis to participants at any time
+- Pass other participants' words outside a cross-reaction round
+- Treat remark frequency as share, demand, or representativeness
+- Conclude validated, purchase intent confirmed, or launch approved
+- Add a new domain persona set without the user's explicit approval
 
-## 발동 한 줄 체크리스트
+## Session checklist
 
-세션 시작 시:
-
-- [ ] 도메인·자극물 명시 인식
-- [ ] `personas-<도메인>.md` 로드
-- [ ] 페르소나 N명 추천 + 사용자 OK (GATE 1)
-- [ ] fgi-participant Agent N개 격리 dispatch
-- [ ] 5단계 세션 진행 (균형 개입 자동)
-- [ ] 테마 분석 (VoC 원문 보존)
-- [ ] `<도메인>/fgi-reports/` 리포트 생성
-- [ ] 합성 한계 경고 + 실 검증 체크리스트 포함
+- [ ] Domain and stimulus recognized
+- [ ] `personas-<domain>.md` loaded
+- [ ] N personas recommended and approved by the user (GATE 1)
+- [ ] `fgi-participant` subagents available (otherwise stop, or run the labeled limited fallback on request)
+- [ ] 5-phase session run with exposure rules and balanced intervention
+- [ ] Every dispatch logged; every utterance has an ID
+- [ ] Thematic analysis with verbatim synthetic responses, a real-user question, and rejection evidence per theme
+- [ ] Report saved to `fgi-reports/` in the current working directory
+- [ ] Simulation label, limits, and goal-based real research included

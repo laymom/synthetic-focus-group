@@ -1,99 +1,103 @@
-# Discussion Guide Template — FGI 5단계 질문 골격
+# Discussion Guide Template — 5-phase FGI question skeleton
 
-권위 출처: [Krueger, *Moderating Focus Groups* (Focus Group Kit Vol. 4), SAGE 1998](https://sk.sagepub.com/book/mono/moderating-focus-groups/toc) ([MAXQDA 가이드 — Krueger 1998·Krueger & Casey 2015 인용](https://www.maxqda.com/research-guides/focus-group-research)) + 오픈서베이 표준 + [픽플리 인터뷰어 가이드](https://pickply.com/blog/fgi-interview-guide).
+Based on: [Krueger, *Moderating Focus Groups* (Focus Group Kit, Vol. 4), SAGE, 1998](https://sk.sagepub.com/book/mono/moderating-focus-groups/toc) (see also the [MAXQDA focus-group guide, which cites Krueger 1998 and Krueger & Casey 2015](https://www.maxqda.com/research-guides/focus-group-research)).
 
-원칙: **메인 질문은 3~5개로 한정**, 가장 많은 시간을 **probe(탐침)**에 배정. general → specific 순서로 전개. 일상어 사용·페르소나 답변에 따라 모더레이터가 즉석 변주 허용.
+Ask the questions in the language of the user's request. The examples below are written in English.
 
-## Step ① 사전 고지 (짧게)
+Principles: **limit main questions to 3–5** and spend most of the time on **probes**. Move from general to specific. Use everyday language. The moderator may improvise variations depending on persona answers.
 
-도메인 무관 공통:
+Exposure reminders (full rules in `SKILL.md`): no stimulus in phases ①–③; first answers to every main question are independent; other personas' remarks are shown only in cross-reaction rounds (4-4); the pre-filter analysis is never shown.
 
-> "안녕하세요. 오늘은 <X>에 대한 솔직한 의견을 듣고 싶어 모셨습니다. 정답·오답은 없고, 평소 생각하신 그대로 말씀해주시면 좋아요. 다른 분 의견에 동의 안 하셔도 괜찮으니 자유롭게 다른 의견 내주세요. 다 끝나면 한 줄 요약을 부탁드릴게요."
+## Phase ① Priming (short)
 
-## Step ② 아이스브레이킹
+Same for every domain:
 
-도메인 무관:
+> "Hello. We've invited you today because we'd like your honest opinions about <X>. There are no right or wrong answers; just say what you usually think. It's fine to disagree with others, so please share different opinions freely. At the end, I'll ask each of you for a one-line summary."
 
-- "간단한 자기소개 — 이름·직업·요즘 관심사 한 줄 부탁드려요."
-- "<도메인>이라는 단어 들으면 떠오르는 게 뭔가요?" (자유 연상)
+## Phase ② Icebreak
 
-## Step ③ general 주제 개방 (자극물 X)
+Same for every domain:
 
-도메인별 변주 — 모더레이터가 도메인 보고 자가 생성. 예시:
+- "Please introduce yourself briefly: name, what you do, and one thing you're into these days."
+- "When you hear the word <domain>, what comes to mind?" (free association)
 
-### 수면관리 (예시 도메인)
+## Phase ③ General topics (no stimulus)
 
-- "평소 잠은 어떻게 주무세요?" (라이프스타일)
-- "잠 잘 자려고 시도해 본 것 중에 효과 있었던 거 / 없었던 거?"
-- "수면 문제 생겼을 때 가장 먼저 무엇을 찾으세요?"
-- "지금까지 수면 관련 앱이나 기기 써본 경험은?" (선행 경험)
+Varies by domain; the moderator writes these after looking at the domain. Examples:
 
-### 차량 매칭 (예시 도메인)
+### Sleep (example domain)
 
-- "지금 차를 어떻게 고르고 계세요?"
-- "차 살 때 가장 중요한 게 뭐예요?" / "가장 답답한 게 뭐예요?"
-- "지인이 차 고를 때 추천해달라 하면 어디 알려주세요?"
+- "How do you usually sleep?" (lifestyle)
+- "Of the things you've tried to sleep better, what worked and what didn't?"
+- "When you have a sleep problem, what's the first thing you look for?"
+- "Have you used any sleep apps or devices so far?" (prior experience)
 
-## Step ④ 자극물 + 심층 탐침 (가장 긴 시간)
+### Car matching (example domain)
 
-### 4-1. 자극물 노출
+- "How are you choosing a car right now?"
+- "What matters most when you buy a car?" / "What frustrates you most?"
+- "When a friend asks you to recommend how to choose a car, where do you point them?"
 
-> "이번에는 <X>의 <자극물>을 보여드릴게요. 5분 정도 천천히 살펴보시고 떠오르는 느낌·궁금증·불편 다 말씀해주세요."
+## Phase ④ Stimulus + deep-dive probes (the longest phase)
 
-(HTML이면 화면 구조·코피·UX 흐름을 모더레이터가 짧게 brief)
+### 4-1. Stimulus exposure
 
-### 4-2. 첫인상 (열린 질문)
+> "Now I'll show you <the stimulus> for <X>. Take about five minutes to look through it, and tell me every feeling, question, or annoyance that comes up."
 
-- "처음 보시고 든 생각?"
-- "가장 먼저 눈에 들어온 부분?"
-- "혹시 이해 안 되는 부분 있나요?"
+(For HTML, the moderator gives a short, neutral brief of the screen structure, copy, and UX flow. The brief must not contain the pre-filter analysis or point at weaknesses.)
 
-### 4-3. 심층 probe (도메인 변주)
+### 4-2. First impressions (open questions, answered independently)
 
-핵심 probe 3~5개 — 모더레이터가 도메인·자극물 보고 자가 생성. 패턴:
+- "What was your first thought?"
+- "What caught your eye first?"
+- "Is there anything you didn't understand?"
 
-- **기대 vs 실제**: "이게 기대한 것과 어떻게 달라요?"
-- **사용 의도**: "지금 이 상태에서 실제로 사용하실 것 같나요? 왜요/왜 아니요?"
-- **누락**: "여기 빠진 게 있다면 뭐예요?"
-- **혼란**: "잠깐 멈추셨던 부분이 있으면 거기서 무슨 생각 들었어요?"
-- **대체 가능성**: "지금 이걸 안 쓰고 <X>를 한다면 어떨까요?"
+### 4-3. Deep-dive probes (vary by domain, answered independently)
 
-### 4-4. 페르소나 간 교차 반응
+3–5 core probes, written by the moderator after looking at the domain and stimulus. Patterns:
 
-매 probe 후 자동 삽입:
+- **Expectation vs. reality**: "How is this different from what you expected?"
+- **Intent to use**: "As it is now, do you think you'd actually use it? Why, or why not?"
+- **Missing**: "If something is missing here, what is it?"
+- **Confusion**: "If there was a point where you paused, what were you thinking there?"
+- **Alternatives**: "What if you didn't use this and did <X> instead?"
 
-- "OOO님 의견에 다른 분들은 어떻게 생각하세요?"
-- "동의하지 않는 분 있나요?"
-- "혹시 다른 관점에서 보신 분?"
+### 4-4. Cross-persona reactions (the only round that shows others' remarks)
 
-지배적 발언자가 나오면:
+Inserted automatically after every probe:
 
-- "잠시만요, <지금까지 적게 말씀하신 페르소나>는 어떻게 보세요?"
+- "What do the rest of you think about <name>'s view?"
+- "Does anyone disagree?"
+- "Did anyone see it from a different angle?"
 
-## Step ⑤ 마무리
+When a dominant speaker appears:
 
-### 5-1. 핵심 요약
+- "Just a moment. <persona who has said the least so far>, how do you see it?"
 
-- "오늘 본 <자극물>에 대해 한 줄로 요약하면?"
+## Phase ⑤ Wrap-up
 
-### 5-2. 랭킹
+### 5-1. Key summary
 
-- "오늘 얘기 나온 <포인트 N개> 중 가장 중요한 1개 골라주세요." (라이브 랭킹)
-- (옵션) "각자 점수 매기면 10점 만점에 몇 점? 왜?"
+- "If you summed up today's <stimulus> in one line, what would it be?"
 
-### 5-3. 추가 의견
+### 5-2. Ranking
 
-- "끝나기 전에 꼭 하고 싶었던 말 있으면?"
-- "<X>를 만든 사람한테 한 줄 메시지 남기신다면?"
+- "Of the <N points> that came up today, pick the one that matters most." (live ranking; show the points as a neutral, unattributed list)
+- (optional) "If each of you gave it a score out of 10, what would it be, and why?"
 
-## 모더레이터 메타 룰 (Krueger, Moderating Focus Groups 1998)
+### 5-3. Final comments
 
-- 모더레이터는 **중립** — 자극물 옹호·비판 둘 다 회피
-- 페르소나 답변에 **공감 신호만** ("네", "그러시군요") — 동의·비동의 신호 X
-- 침묵 두려워하지 말기 (5초 이상 침묵 = 깊은 답변 유도)
-- "Why?" probe 3번까지 — Why-Why-Why로 핵심 이유 도달
-- 페르소나 발언 그대로 **paraphrase**해서 확인 ("그러니까 ○○라는 거죠?")
+- "Anything you really wanted to say before we finish?"
+- "If you could leave a one-line message for the people who made <X>, what would it be?"
 
-## 변주 가능
+## Moderator rules (adapted from focus-group practice; see Krueger, 1998)
 
-도메인·자극물·세션 목적에 따라 모더레이터가 위 골격을 변주. 단 5단계 순서·균형 개입 룰은 유지.
+- The moderator is **neutral**: neither defend nor criticize the stimulus.
+- Respond to answers with **acknowledgement only** ("I see", "Okay"), never with agreement or disagreement.
+- Don't fear silence (a pause of about five seconds invites a deeper answer).
+- Ask for reasons up to 3 times to reach the core reason. Phrase it as "What makes you say that?" or "Tell me more" rather than a bare "Why?", which can sound like a challenge.
+- **Paraphrase** an answer back to confirm it ("So what you mean is ..., right?").
+
+## Variations
+
+The moderator may adapt this skeleton to the domain, stimulus, and session goal. Keep the order of the 5 phases, the exposure rules, and the balanced-intervention rules.
