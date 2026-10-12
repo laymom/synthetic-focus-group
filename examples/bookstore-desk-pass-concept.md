@@ -1,0 +1,1 @@
+Quiet Desk Pass — an independent neighborhood bookstore offers 6 window seats Tue–Thu 10:00–15:00 for remote workers. $5 day pass (full $5 usable as book credit) or $15/month. Includes Wi-Fi, outlets, drip coffee, 10% off books. Quiet rules: calls only outside. Seats first-come, no reservations.

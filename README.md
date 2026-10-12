@@ -4,7 +4,21 @@
 
 ## Example
 
-<!-- EXAMPLE: filled in phase 2 -->
+Real run in Claude Code (simulated personas; user answers role-played by an AI; see run notes). Stimulus: a neighborhood bookstore's weekday desk pass for remote workers, 5 personas, 30 isolated participant calls. One of the six themes from the report:
+
+> **Theme 2: "First-come, no reservations" plus 6 seats is the operational variable most likely to kill repeat use — Synthetic persona response**
+>
+> **Utterances cited**: P1-S4-03, P1-S4-04, P1-S4-07, P1-S5-01, P1-S5-03, P3-S4-03, P3-S4-07, P3-S4-10, P3-S5-01, P3-S5-03, P4-S4-03, P4-S4-07, P4-S4-09, P4-S5-03, P5-S4-03.
+>
+> "'First-come, no reservations' — I get the philosophy, but if I'm biking over with a client and there's no seat, that's a real problem for my situation. I'd want to ask the owner whether there's any way to get a heads-up when it's busy, even just a live seat count somewhere." — P3-S4-03 (Priya, Synthetic persona response)
+>
+> "Point (f) — the live seat-count signal — is the one that would materially change my actual behavior, not just my opinion of the concept. I can absorb the no-reservations rule, I can tolerate the narrow window, but if I show up and the board says '6 of 6 taken' I have wasted a 25-minute commute and probably blown a deadline. A 9:30am post — even just a number on Instagram Stories — turns a gamble into a decision." — P1-S5-01 (Jess, Synthetic persona response)
+>
+> **Question to ask real users (Open question)**: What fraction of prospective users would walk/bike/drive to the shop without a prior availability check — and of those turned away once, how many return?
+>
+> **Evidence that would reject this hypothesis**: If the pilot's actual seat occupancy stays below ~70% during peak hours (10:00–12:00), arrival anxiety would be overstated and the no-reservations rule can stand on its own. Conversely, if pilot-week occupancy hits 100% on any day in the first two weeks, the signal is urgent.
+
+Full transcript, report, dispatch log, and run notes (including the failures): [examples/bookstore-desk-pass-report.md](examples/bookstore-desk-pass-report.md)
 
 ## Install
 
