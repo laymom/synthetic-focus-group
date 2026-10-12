@@ -8,8 +8,8 @@ Unlike a single "act as a user and give feedback" prompt, `/fgi` reproduces the 
 
 ## Why it's different
 
-- **Persona isolation** — each persona runs as a separate subagent, so they don't collapse into one averaged "AI voice" (a known failure mode of multi-persona prompting; see *Nature Machine Intelligence 2025* on identity flattening).
-- **Methodology-anchored** — the 5-phase flow, balanced-intervention rules, and thematic analysis are drawn from focus-group research literature (Krueger 1998, Focus Agent arXiv 2409.01907), not invented.
+- **Persona isolation** — each persona runs in its own subagent — a design choice to reduce cross-persona contamination. It does not fix the identity flattening documented by Wang et al. ([*Nature Machine Intelligence*, 2025](https://doi.org/10.1038/s42256-025-00986-z)).
+- **Methodology-anchored** — the 5-phase flow, balanced-intervention rules, and thematic analysis are drawn from focus-group research literature (Krueger, *Moderating Focus Groups*, 1998; Focus Agent arXiv 2409.01907), not invented.
 - **Group dynamics** — cross-persona probes ("anyone disagree?"), dominant-speaker balancing, and conflict surfacing are built into the moderator loop.
 - **Verbatim preservation** — themes are backed by raw persona quotes, never summarized away.
 
@@ -39,23 +39,51 @@ Unlike a single "act as a user and give feedback" prompt, `/fgi` reproduces the 
 
 ## Research backing
 
-- Krueger & Casey, *Focus Groups* (1998) — session structure & moderator neutrality
+- [Richard A. Krueger, *Moderating Focus Groups* (Focus Group Kit, Vol. 4), SAGE, 1998](https://sk.sagepub.com/book/mono/moderating-focus-groups/toc) — session structure & moderator neutrality
 - [Focus Agent (arXiv 2409.01907)](https://arxiv.org/html/2409.01907v1) — balanced intervention in synthetic groups
-- [Cambridge 2024](https://www.cambridge.org/core/journals/political-analysis/article/synthetic-replacements-for-human-survey-data-the-perils-of-large-language-models/B92267DC26195C7F36E63EA04A47D2FE) · [Nature MI 2025](https://www.nature.com/articles/s42256-025-00986-z) · [LSE 2025](http://eprints.lse.ac.uk/127300/1/shrestha-et-al-2025-beyond-weird-can-synthetic-survey-participants-substitute-for-humans-in-global-policy-research.pdf) — limits of synthetic survey participants
+- [Bisbee et al., Political Analysis 2024](https://doi.org/10.1017/pan.2024.5) · [Wang et al., Nature Machine Intelligence 2025](https://doi.org/10.1038/s42256-025-00986-z) · [Shrestha et al., Behavioral Science & Policy 2025](https://doi.org/10.1177/23794607241311793) — limits of synthetic survey participants
 
 ## Installation
 
-Copy into your Claude Code skills directory:
+Claude Code only (needs subagents).
+
+### 1. Install the skill
+
+Recommended:
 
 ```bash
-cp -r fgi ~/.claude/skills/fgi
+npx skills add laymom/synthetic-focus-group --skill fgi
 ```
 
-Restart Claude Code so the skill registers.
+Manual (macOS/Linux):
 
-### Companion subagent
+```bash
+git clone https://github.com/laymom/synthetic-focus-group.git ~/.claude/skills/fgi
+```
 
-`/fgi` dispatches an isolated subagent named `fgi-participant` (one per persona). You'll want a matching agent definition in `~/.claude/agents/fgi-participant.md` whose job is: *receive one persona's attributes + the stimulus + current moderator question, and respond in first person as that persona only.* A starter definition is included in `agents/` if present; otherwise any single-persona role agent works.
+Manual (Windows PowerShell):
+
+```powershell
+git clone https://github.com/laymom/synthetic-focus-group.git "$HOME\.claude\skills\fgi"
+```
+
+### 2. Install the participant agent (required)
+
+`/fgi` dispatches an isolated subagent named `fgi-participant` (one per persona; it receives one persona's attributes + the stimulus + the current moderator question, and responds in first person as that persona only), and the skill forbids simulating all personas in the main context. `npx skills add` does **not** install this agent — copy `agents/fgi-participant.md` into `~/.claude/agents/` yourself. Without it, `/fgi` cannot run.
+
+macOS/Linux (from the cloned repo or the installed skill folder):
+
+```bash
+mkdir -p ~/.claude/agents && cp agents/fgi-participant.md ~/.claude/agents/
+```
+
+Windows PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.claude\agents" | Out-Null; Copy-Item agents\fgi-participant.md "$HOME\.claude\agents\"
+```
+
+Restart Claude Code so the skill and agent register.
 
 ## Usage
 

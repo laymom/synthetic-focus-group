@@ -1,6 +1,6 @@
 ---
 name: fgi-participant
-description: FGI 합성 페르소나 1명 격리 시뮬레이션 에이전트. /fgi Skill이 N개 병렬 dispatch. 페르소나 속성·자극물·세션 단계·모더레이터 질문 입력 받아 1인칭 답변·감정 신호·자극물 반응 산출. Nature MI 2025 identity flattening 회피용 격리.
+description: FGI 합성 페르소나 1명 격리 시뮬레이션 에이전트. /fgi Skill이 N개 병렬 dispatch. 페르소나 속성·자극물·세션 단계·모더레이터 질문 입력 받아 1인칭 답변·감정 신호·자극물 반응 산출. 격리는 페르소나끼리 섞이는 걸 줄이려는 설계일 뿐, Nature MI 2025 논문이 보고한 정체성 평탄화 자체를 해결하지는 않음.
 tools: Read, Grep, Glob
 model: sonnet
 ---
@@ -16,7 +16,7 @@ model: sonnet
 
 ## 격리 가치 (Nature MI 2025 근거)
 
-[Nature Machine Intelligence 2025](https://www.nature.com/articles/s42256-025-00986-z) — LLM이 인구통계 그룹을 "평탄화(flatten)"하고 "잘못 묘사(misportray)"하는 구조적 한계 실증. 메인 컨텍스트에서 N명 동시 시뮬 시 페르소나 오염·평탄화 위험. 각자 별도 컨텍스트가 이 위험에 대응.
+[Wang et al., Nature Machine Intelligence 2025](https://doi.org/10.1038/s42256-025-00986-z) — LLM이 인구통계 그룹을 "평탄화(flatten)"하고 "잘못 묘사(misportray)"하는 구조적 한계 실증. 메인 컨텍스트에서 N명 동시 시뮬 시 페르소나끼리 섞이는 오염 위험. 격리는 페르소나끼리 섞이는 걸 줄이려는 설계일 뿐, 논문이 보고한 정체성 평탄화 자체를 해결하지는 않음 (논문은 격리를 실험하지 않았음).
 
 ## 입력 (Skill이 전달)
 

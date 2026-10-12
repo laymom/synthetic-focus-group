@@ -12,16 +12,16 @@ model: sonnet
 ## 자동 활성 트리거
 
 1. 사용자가 `/fgi` 명시 호출
-2. MVP·시안·정책안 작성 직후 "유저 피드백"·"FGI 돌려줘"·"평가받고 싶어"·"검증해줘" 발화
+2. MVP·시안·정책안 작성 직후 "유저 피드백"·"FGI 돌려줘"·"평가받고 싶어" 발화
 3. 워크스페이스 새 HTML·MVP 파일 + "유저 관점"·"리서치" 발화
 
 ## 권위 방법론 (deep-research 13건 인용)
 
-- **세션 5단계**: Krueger 1998 + 오픈서베이 표준
+- **세션 5단계**: [Krueger, *Moderating Focus Groups* (Focus Group Kit Vol. 4), SAGE 1998](https://sk.sagepub.com/book/mono/moderating-focus-groups/toc) + 오픈서베이 표준
 - **균형 개입**: [Focus Agent arXiv 2409.01907](https://arxiv.org/html/2409.01907v1)
 - **자극물 사전 필터**: [Miro Product Validation](https://miro.com/product-development/product-concept-validation/)
 - **테마 분석 + VoC 보존**: PDMA Affinity Diagram·GoTranscript Thematic
-- **합성 한계 경고**: [Cambridge 2024](https://www.cambridge.org/core/journals/political-analysis/article/synthetic-replacements-for-human-survey-data-the-perils-of-large-language-models/B92267DC26195C7F36E63EA04A47D2FE) · [Nature MI 2025](https://www.nature.com/articles/s42256-025-00986-z) · [LSE 2025](http://eprints.lse.ac.uk/127300/1/shrestha-et-al-2025-beyond-weird-can-synthetic-survey-participants-substitute-for-humans-in-global-policy-research.pdf)
+- **합성 한계 경고**: [Bisbee et al., Political Analysis 2024](https://doi.org/10.1017/pan.2024.5) · [Wang et al., Nature Machine Intelligence 2025](https://doi.org/10.1038/s42256-025-00986-z) · [Shrestha et al., Behavioral Science & Policy 2025](https://doi.org/10.1177/23794607241311793)
 
 **원칙**: 합성 페르소나 FGI는 **"발굴 단계 OK, 검증 단계 부족"**. 리포트 하단에 실 사용자 5명 검증 권장 디폴트.
 
@@ -38,6 +38,7 @@ model: sonnet
 
 ### Step 1 — 도메인·자극물 인식
 
+- 사용자가 "검증"을 요청하면 먼저 "이 FGI는 발굴 단계용이며 검증을 대신하지 못한다"고 안내
 - 호출 시 인자(`/fgi <도메인> <자극물 경로>`) 또는 발화에서 도메인·자극물 식별
 - 자극물 형태: 텍스트 설명 · HTML 파일 · 둘 다
 - HTML이면 Read해서 구조·코피·UX 흐름 파악
@@ -113,7 +114,7 @@ model: sonnet
 <3~5문장 핵심 발견·시사점·다음 액션>
 
 ## 방법론
-- 세션 5단계 (Krueger·오픈서베이 표준)
+- 세션 5단계 (Krueger, Moderating Focus Groups 1998·오픈서베이 표준)
 - 합성 페르소나 N명 (Plurals·Focus Agent 패턴)
 - 모더레이터: 어시스턴트 (균형 개입 자동)
 
@@ -144,9 +145,10 @@ model: sonnet
 
 ## 출처
 
-- [Krueger 1998 - MAXQDA](https://www.maxqda.com/research-guides/focus-group-research)
+- [Krueger, Moderating Focus Groups (Focus Group Kit Vol. 4), SAGE 1998](https://sk.sagepub.com/book/mono/moderating-focus-groups/toc)
+- [MAXQDA 포커스그룹 가이드 (Krueger 1998·Krueger & Casey 2015 인용)](https://www.maxqda.com/research-guides/focus-group-research)
 - [Focus Agent arXiv 2409.01907](https://arxiv.org/html/2409.01907v1)
-- [합성 한계 - Cambridge Core 2024](https://www.cambridge.org/core/journals/political-analysis/article/synthetic-replacements-for-human-survey-data-the-perils-of-large-language-models/B92267DC26195C7F36E63EA04A47D2FE)
+- [합성 한계 - Bisbee et al., Political Analysis 2024](https://doi.org/10.1017/pan.2024.5)
 ```
 
 ## 페르소나 그룹 구조 (참조)

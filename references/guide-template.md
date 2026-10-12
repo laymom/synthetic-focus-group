@@ -1,6 +1,6 @@
 # Discussion Guide Template — FGI 5단계 질문 골격
 
-권위 출처: Krueger 1998 ([MAXQDA](https://www.maxqda.com/research-guides/focus-group-research)) + 오픈서베이 표준 + [픽플리 인터뷰어 가이드](https://pickply.com/blog/fgi-interview-guide).
+권위 출처: [Krueger, *Moderating Focus Groups* (Focus Group Kit Vol. 4), SAGE 1998](https://sk.sagepub.com/book/mono/moderating-focus-groups/toc) ([MAXQDA 가이드 — Krueger 1998·Krueger & Casey 2015 인용](https://www.maxqda.com/research-guides/focus-group-research)) + 오픈서베이 표준 + [픽플리 인터뷰어 가이드](https://pickply.com/blog/fgi-interview-guide).
 
 원칙: **메인 질문은 3~5개로 한정**, 가장 많은 시간을 **probe(탐침)**에 배정. general → specific 순서로 전개. 일상어 사용·페르소나 답변에 따라 모더레이터가 즉석 변주 허용.
 
@@ -86,7 +86,7 @@
 - "끝나기 전에 꼭 하고 싶었던 말 있으면?"
 - "<X>를 만든 사람한테 한 줄 메시지 남기신다면?"
 
-## 모더레이터 메타 룰 (Krueger 1998)
+## 모더레이터 메타 룰 (Krueger, Moderating Focus Groups 1998)
 
 - 모더레이터는 **중립** — 자극물 옹호·비판 둘 다 회피
 - 페르소나 답변에 **공감 신호만** ("네", "그러시군요") — 동의·비동의 신호 X
