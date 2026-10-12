@@ -16,6 +16,7 @@ A real `/fgi` run in Claude Code. **All participants are simulated personas; eve
 
 ## Run notes
 
+- Produced with commit 8e87308. The failures listed here were fixed afterwards; see CHANGELOG 1.1.0.
 - **User answers were written by an AI agent** acting as the bookstore owner (goal: decide whether to pilot for 4 weeks; target: remote/hybrid workers within 15 minutes). All participants are simulated personas.
 - **Output is unedited.** The moderator replies and the final report below are reproduced verbatim from the run. Nothing was trimmed.
 - How it was run: `npx -y skills add <local clone> --skill fgi -a claude-code -y`, then the agent copy from the README. Every call ran with `CLAUDE_CODE_DISABLE_CLAUDE_MDS=1` and `--setting-sources project --strict-mcp-config --permission-mode acceptEdits --allowedTools "Agent,Task,Read,Write,Edit,Glob,Grep"`. A probe in a separate session confirmed the English project-level `fgi` skill and `fgi-participant` agent were the ones loaded and that no CLAUDE.md was visible.

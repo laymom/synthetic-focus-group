@@ -39,6 +39,15 @@
 - The general phase was described as stimulus-free, but the first participant dispatch already included the stimulus
 - Moderator rule "ask Why three times" no longer attributed to Krueger; reworded to ask for reasons without a bare "Why?"
 
+### Fixed (found in a real run)
+- The 54 KB report was generated in one message and timed out after about 64 minutes of API retries; the report is now written section by section
+- Persona attributes carried stimulus details and concept concerns, and a name a persona had invented; attributes now describe the person only, and phase ①–③ questions must not steer toward the concept
+- Prior utterances were passed as condensed quotes or summaries while the log said "full"; they are now passed verbatim with IDs every time, and the log records "verbatim" or "summary"
+- Quotes labeled verbatim silently dropped words, and Appendix A pointed back to the themes; cuts now use "…" and Appendix A lists every utterance in full
+- Cost: one probe per round, one cross-reaction round per session, at most 6 rounds (about 30 participant calls for 5 personas)
+- Participant answers ran 4–6 sentences; the agent now enforces 1–3
+- New "Final check" on the saved report: simulation labels, quotes against Appendix A, no "4 of 5" counts, real-user question and rejection evidence per theme, accurate dispatch log
+
 ## 1.0.0 — 2026-06-14
 
 - Initial release: `/fgi` skill, `fgi-participant` agent, discussion guide template, and the sleep-app persona set

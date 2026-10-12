@@ -57,16 +57,18 @@ The bundled example is `references/personas-sleep.md`, a Korean-context sleep-ap
 
 Build each persona around **behavior context** (what they do today and when the problem shows up), **current alternatives** (what they use or do instead now), and **constraints** (time, money, skills, environment, rules). Age and occupation are background only. Do not derive tastes, preferences, or purchasing power from demographics. Keep each persona's tone of voice and **forbidden phrases** so the simulation stays in character.
 
+Persona attributes describe the person, never the stimulus. They must not contain stimulus details (prices, days, hours, features, the concept's name) or concerns about the concept, and must not add names or facts that participants invented during the session. Write them once, before phase ①, and do not update them from answers.
+
 ## Session state and exposure rules
 
 Subagents are stateless: each dispatch starts from nothing. You, the moderator, hold the session state and decide exactly what each participant sees.
 
-1. **No stimulus before phase ④.** Dispatches for phases ①–③ contain no stimulus text, no stimulus file path, and no hint of it.
+1. **No stimulus before phase ④.** Dispatches for phases ①–③ contain no stimulus text, no stimulus file path, and no hint of it. Phase ①–③ questions are about the persona's own habits and do not steer toward the concept.
 2. **The pre-filter analysis is never sent to participants.** It must not appear in any dispatch, and probes must not lead toward its findings. In the report, note which pre-filter findings personas raised unprompted.
 3. **First reactions are independent.** For every main question (phase ③ questions, the phase ④ first impression, and each phase ④ probe), each participant answers without seeing any other participant's words.
 4. **Other participants' remarks only in cross-reaction rounds.** Pass other personas' utterances (verbatim, with IDs) only in an explicit cross-reaction round in phase ④. In phase ⑤ you may show a neutral, unattributed list of the points raised so personas can rank them.
-5. **Each dispatch carries the participant's own history.** Include that participant's own earlier utterances in this session, verbatim with IDs, so it stays consistent.
-6. **Log every dispatch**: dispatch number, participant ID, phase, question, what was exposed (stimulus yes/no, own prior utterance IDs, other participants' utterance IDs), and the output. The log goes into the report's transcript appendix.
+5. **Each dispatch carries the participant's own history.** Include all of that participant's earlier utterances in this session, verbatim with IDs, in every dispatch. Never summarize or shorten them.
+6. **Log every dispatch**: dispatch number, participant ID, phase, question, what was exposed (stimulus yes/no, own prior utterance IDs and whether they were passed "verbatim" or "summary", other participants' utterance IDs), and the output. Record what was actually passed, not what the rules say. The log goes into the report's transcript appendix.
 
 ### Utterance IDs
 
@@ -107,31 +109,28 @@ For each question, dispatch one `fgi-participant` subagent per persona. **Parall
 - The session language
 - The current phase (one of the 5)
 - The current moderator question
-- The participant's own prior utterances in this session, verbatim with IDs
+- The participant's own prior utterances in this session, verbatim with IDs (never summarized)
 - The stimulus (text and/or HTML path), **only from phase ④ on**
 - Other personas' utterances, verbatim with IDs, **only in a phase ④ cross-reaction round**
 
-Cost scales with N × the number of questions asked: every question is N subagent calls.
+One round = one question = N parallel calls. Never bundle several probes into one dispatch.
 
 ### Step 5 — Run the 5-phase session
 
-In every phase: moderator question, then N answers collected, then consolidated and summarized by you.
+**At most 6 rounds** (6 × N calls; 30 for 5 personas):
 
-| Phase | Length | Content | Participants see |
+| Round | Phase | Question | Participants see |
 |---|---|---|---|
-| ① Priming | short | rules, purpose, "please be honest" | the priming text only |
-| ② Icebreak | short | persona self-introduction, natural entry | priming + own prior utterances |
-| ③ General | medium | general opinions about the domain | no stimulus, no other personas' words |
-| ④ Stimulus + deep-dive | long | stimulus exposure, first impressions, 3–5 probes, cross-persona reactions | stimulus; others' words only in cross-reaction rounds |
-| ⑤ Wrap-up | short | key summary, ranking, final comments | neutral unattributed list of points raised |
+| 1 | ① Priming + ② Icebreak | priming text + self-introduction | the priming text |
+| 2 | ③ General | one question about their own habits in the domain | no stimulus, no other personas' words |
+| 3 | ④ First impression | stimulus exposure + "What was your first thought?" | stimulus; answers independent |
+| 4 | ④ Probe | the single most important probe | stimulus; answers independent |
+| 5 | ④ Cross-reaction | "Does anyone disagree?" (the only cross-reaction round) | stimulus + others' round 3–4 utterances, verbatim with IDs |
+| 6 | ⑤ Wrap-up | one-line summary + ranking | neutral unattributed list of points raised |
 
-Phases ① and ② may share one dispatch (priming text + icebreak question).
+Each extra probe adds N calls; ask the user before going past 6 rounds. After each round, consolidate the answers yourself.
 
-**Balanced intervention (automatic)**:
-
-- When one persona talks at length or dominates, address the quieter personas by name in the next round ("What do you think, <name>?").
-- After every main question in phase ④, run a cross-reaction round that asks "Does anyone disagree?"
-- Avoid consensus pressure: surface conflicts of opinion explicitly.
+**Balanced intervention**: in the next round, address personas who said least by name; in the cross-reaction round, surface conflicts of opinion explicitly and avoid consensus pressure.
 
 ### Step 6 — Thematic analysis
 
@@ -141,14 +140,16 @@ Utterance, then code, then sub-theme, then theme:
 2. Group similar utterances under a code (e.g. "the button is too small" + "I can't read the text" → code: UI visibility).
 3. Group codes into sub-themes (e.g. UI visibility + color contrast → sub-theme: visual accessibility).
 4. Group sub-themes into themes (e.g. visual accessibility + intuitive interaction → theme: usability).
-5. **Keep synthetic persona responses verbatim**: under each theme, quote each persona's original words exactly (no summarizing) and cite their IDs.
+5. **Keep synthetic persona responses verbatim**: under each theme, quote each persona's original words exactly (no summarizing) and cite their IDs. Mark every cut with "…"; never drop words silently.
 6. For each theme, write a "question to ask real users" and the "evidence that would reject this hypothesis".
 
-Never read how often something was said as customer share, demand, or statistical representativeness. Several personas agreeing means the model produced similar answers, not that most customers think so.
+Never read how often something was said as customer share, demand, or statistical representativeness. Several personas agreeing means the model produced similar answers, not that most customers think so. Do not write persona counts as proportions ("4 of 5"); write "several personas".
 
 ### Step 7 — Write the report
 
 Location: `fgi-reports/YYYY-MM-DD-<slug>.md` in the current working directory. Write it in the user's language; translate the headings below.
+
+**Write it section by section.** Create the file with the header, simulation label, and summary; then append each theme, the remaining sections, Appendix A, and Appendix B with separate edits. Never generate the whole report in one message (a long single write can stall on API retries and time out).
 
 ```markdown
 # FGI report (synthetic) — <domain>: <stimulus in one line>
@@ -207,10 +208,10 @@ Choose by goal (only the rows that apply):
 - Nothing in this report means validated, purchase intent confirmed, or launch approved.
 
 ## Appendix A — Synthetic persona responses (verbatim)
-<every utterance, in order, as "ID — persona — phase — exact text">
+<every utterance, in order, as "ID — persona — phase — exact text"; full text for every ID, no pointers such as "see themes" or "see transcript">
 
 ## Appendix B — Dispatch log
-| # | Participant ID | Phase | Question | Exposed (stimulus Y/N · own prior IDs · others' IDs) | Output IDs |
+| # | Participant ID | Phase | Question | Exposed (stimulus Y/N · own prior IDs, verbatim/summary · others' IDs) | Output IDs |
 |---|---|---|---|---|---|
 
 ## Sources
@@ -221,6 +222,17 @@ Choose by goal (only the rows that apply):
 ```
 
 Never write "validated", "purchase intent confirmed", "users want", or "launch approved" as a conclusion in the report.
+
+## Final check — run on the saved report before presenting
+
+Re-open the saved file (not your memory of it) and fix anything that fails:
+
+- [ ] The simulation label is at the top, and every theme and quote carries "Synthetic persona response"
+- [ ] Every quote matches its Appendix A utterance word for word, or marks each cut with "…"
+- [ ] Appendix A has the full text of every utterance ID
+- [ ] No persona count is written as a share or proportion ("4 of 5"); say "several personas"
+- [ ] Every theme has a question to ask real users and the evidence that would reject it
+- [ ] The dispatch log matches what was actually passed (stimulus, verbatim/summary, others' IDs)
 
 ## Persona group structure (reference)
 
@@ -260,6 +272,8 @@ After the gate passes, run Steps 3–7 and give a short progress update at each 
 - Simulate all N personas in the main context (personas contaminate each other; isolate them in subagents), except in a user-requested, labeled limited fallback
 - Show the stimulus before phase ④, or show the pre-filter analysis to participants at any time
 - Pass other participants' words outside a cross-reaction round
+- Summarize a participant's own prior utterances in a dispatch
+- Write the whole report in one message
 - Treat remark frequency as share, demand, or representativeness
 - Conclude validated, purchase intent confirmed, or launch approved
 - Add a new domain persona set without the user's explicit approval
@@ -270,8 +284,8 @@ After the gate passes, run Steps 3–7 and give a short progress update at each 
 - [ ] `personas-<domain>.md` loaded
 - [ ] N personas recommended and approved by the user (GATE 1)
 - [ ] `fgi-participant` subagents available (otherwise stop, or run the labeled limited fallback on request)
-- [ ] 5-phase session run with exposure rules and balanced intervention
+- [ ] 5-phase session run in at most 6 rounds, with exposure rules and balanced intervention
 - [ ] Every dispatch logged; every utterance has an ID
 - [ ] Thematic analysis with verbatim synthetic responses, a real-user question, and rejection evidence per theme
-- [ ] Report saved to `fgi-reports/` in the current working directory
-- [ ] Simulation label, limits, and goal-based real research included
+- [ ] Report written section by section to `fgi-reports/` in the current working directory
+- [ ] Final check run on the saved report

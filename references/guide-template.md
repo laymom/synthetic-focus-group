@@ -4,9 +4,9 @@ Based on: [Krueger, *Moderating Focus Groups* (Focus Group Kit, Vol. 4), SAGE, 1
 
 Ask the questions in the language of the user's request. The examples below are written in English.
 
-Principles: **limit main questions to 3–5** and spend most of the time on **probes**. Move from general to specific. Use everyday language. The moderator may improvise variations depending on persona answers.
+Principles: **one question per round, at most 6 rounds** (round plan in `SKILL.md` Step 5). The lists below are a menu: pick one question per round, never send several at once. Move from general to specific. Use everyday language.
 
-Exposure reminders (full rules in `SKILL.md`): no stimulus in phases ①–③; first answers to every main question are independent; other personas' remarks are shown only in cross-reaction rounds (4-4); the pre-filter analysis is never shown.
+Exposure reminders (full rules in `SKILL.md`): no stimulus in phases ①–③, and no questions there that steer toward the concept; first answers to every main question are independent; other personas' remarks are shown only in the one cross-reaction round (4-4); the pre-filter analysis is never shown.
 
 ## Phase ① Priming (short)
 
@@ -54,7 +54,7 @@ Varies by domain; the moderator writes these after looking at the domain. Exampl
 
 ### 4-3. Deep-dive probes (vary by domain, answered independently)
 
-3–5 core probes, written by the moderator after looking at the domain and stimulus. Patterns:
+One core probe (the one that matters most for the user's goal), written by the moderator after looking at the domain and stimulus. Patterns:
 
 - **Expectation vs. reality**: "How is this different from what you expected?"
 - **Intent to use**: "As it is now, do you think you'd actually use it? Why, or why not?"
@@ -64,7 +64,7 @@ Varies by domain; the moderator writes these after looking at the domain. Exampl
 
 ### 4-4. Cross-persona reactions (the only round that shows others' remarks)
 
-Inserted automatically after every probe:
+One round per session, after the probe, showing others' first-impression and probe answers verbatim with IDs. Pick one:
 
 - "What do the rest of you think about <name>'s view?"
 - "Does anyone disagree?"
