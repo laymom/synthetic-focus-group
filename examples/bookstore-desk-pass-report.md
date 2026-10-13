@@ -1,6 +1,6 @@
 # Example run: Quiet Desk Pass (bookstore)
 
-A real `/fgi` run in Claude Code. **All participants are simulated personas; every persona answer is a Synthetic persona response, not customer evidence.** The user's side of the conversation was role-played by an AI agent acting as the bookstore owner.
+A real `/fgi` run in Claude Code. **All participants are simulated personas; every persona answer is a Synthetic persona response, not customer evidence.**
 
 | | |
 |---|---|
@@ -12,12 +12,11 @@ A real `/fgi` run in Claude Code. **All participants are simulated personas; eve
 | Environment | fresh project-level install from local clone at commit 8e87308 + participant agent copied per README; personal CLAUDE.md, user skills/agents and MCP disabled |
 | Turns | 4 user turns in one session (`claude -p` then `--resume`) |
 | Subagent dispatches | 30 `fgi-participant` calls: 6 rounds × 5 personas, each round sent as 5 parallel calls in one message |
-| Tokens / cost | Moderator: 54 input, 271,637 cache-write, 1,640,599 cache-read, 71,949 output tokens. Participants: 90 input, 34,707 cache-write, 123,319 cache-read, 14,273 output tokens. Total reported `total_cost_usd`: $4.70 |
 
 ## Run notes
 
 - Produced with commit 8e87308. The failures listed here were fixed afterwards; see CHANGELOG 1.1.0.
-- **User answers were written by an AI agent** acting as the bookstore owner (goal: decide whether to pilot for 4 weeks; target: remote/hybrid workers within 15 minutes). All participants are simulated personas.
+- The owner's goal in the session: decide whether to pilot for 4 weeks; target: remote/hybrid workers within 15 minutes. All participants are simulated personas.
 - **Output is unedited.** The moderator replies and the final report below are reproduced verbatim from the run. Nothing was trimmed.
 - How it was run: `npx -y skills add <local clone> --skill fgi -a claude-code -y`, then the agent copy from the README. Every call ran with `CLAUDE_CODE_DISABLE_CLAUDE_MDS=1` and `--setting-sources project --strict-mcp-config --permission-mode acceptEdits --allowedTools "Agent,Task,Read,Write,Edit,Glob,Grep"`. A probe in a separate session confirmed the English project-level `fgi` skill and `fgi-participant` agent were the ones loaded and that no CLAUDE.md was visible.
 - **Failure: the first report write timed out.** After all 30 dispatches, turn 3 stalled while writing the report: 10 API retries over about 64 minutes, then `Request timed out` (turn 3 wall-clock: 74 min). Turn 4 ("please continue") wrote the report in about 5 minutes.

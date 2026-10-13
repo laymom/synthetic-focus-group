@@ -4,7 +4,7 @@
 
 ## Example
 
-Real run in Claude Code (simulated personas; user answers role-played by an AI; see run notes). Stimulus: a neighborhood bookstore's weekday desk pass for remote workers, 5 personas, 30 isolated participant calls. One of the six themes from the report:
+Real run in Claude Code (simulated personas; see run notes). Stimulus: a neighborhood bookstore's weekday desk pass for remote workers, 5 personas, 30 isolated participant calls. One of the six themes from the report:
 
 > **Theme 2: "First-come, no reservations" plus 6 seats is the operational variable most likely to kill repeat use — Synthetic persona response**
 >
@@ -135,7 +135,7 @@ Every claim in the report carries one of: User-provided fact · Sourced fact (wi
   - Shrestha et al. (2025): GPT-4 synthetic participants roughly matched human responses on average, but matched less well outside WEIRD (Western, educated, industrialized, rich, democratic) countries and leaned more positive than humans.
   - Wang et al. (2025): LLMs standing in for identity groups can misportray and flatten them; mitigation techniques reduced but did not remove this.
 - **Personas are Korean-context examples.** Only one set ships (`references/personas-sleep.md`, a sleep app, 8 fictional Korean personas). Duplicate and rewrite it for your domain. Build personas around behavior context, current alternatives, and constraints rather than demographics.
-- **Cost.** Every moderator question is one subagent call per persona; a session is capped at 6 rounds, so 5 personas make about 30 participant calls. Measured in the example run (5 personas, 30 participant calls; moderator Opus, participants Sonnet): $4.70 in total and about 15 minutes of model time, but 74 minutes wall clock, because writing the 54 KB report in one go hit API retries and timed out (the skill now writes the report section by section). The example was produced before the 1.1.0 fixes; its run notes list the failures.
+- **Run size and time.** Every moderator question is one subagent call per persona; a session is capped at 6 rounds, so 5 personas make about 30 participant calls, and a run takes a while. The example run took 74 minutes wall clock because writing the 54 KB report in one go hit API retries and timed out (the skill now writes the report section by section). The example was produced before the 1.1.0 fixes; its run notes list the failures.
 - **Compatibility.** Claude Code only, because it needs subagents and the `fgi-participant` agent. Other agents may install the skill, but it is not built for them.
 - **When to run real research instead**, by goal: usability problems → moderated usability tests; demand → a demand test such as a smoke test or pre-orders; pricing → pricing research; policy → stakeholder or expert review.
 

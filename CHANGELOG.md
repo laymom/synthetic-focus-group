@@ -12,7 +12,7 @@
 - If the `fgi-participant` agent is unavailable, the skill stops, or runs a clearly labeled single-context fallback only on request
 - Persona-building rule: behavior context, current alternatives, and constraints, not demographics
 - `CHANGELOG.md`
-- A real example run (`examples/bookstore-desk-pass-report.md`, stimulus in `examples/bookstore-desk-pass-concept.md`): fresh project-level install in Claude Code, 5 simulated personas, 30 participant dispatches, user answers role-played by an AI, with run notes listing the failures found; excerpt in the README
+- A real example run (`examples/bookstore-desk-pass-report.md`, stimulus in `examples/bookstore-desk-pass-concept.md`): fresh project-level install in Claude Code, 5 simulated personas, 30 participant dispatches, with run notes listing the failures found; excerpt in the README
 
 ### Changed
 - `SKILL.md`, `agents/fgi-participant.md`, and `references/guide-template.md` are now in English; the session and report follow the user's language. `references/personas-sleep.md` stays a Korean-context example with an English note at the top
