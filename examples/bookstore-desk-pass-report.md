@@ -1,6 +1,6 @@
-# Example run: Quiet Desk Pass (bookstore)
+# Example run: Full session (v1.1) — Quiet Desk Pass (bookstore)
 
-A real `/fgi` run in Claude Code. **All participants are simulated personas; every persona answer is a Synthetic persona response, not customer evidence.**
+A real `/fgi` Full session run in Claude Code with version 1.1 of the skill (the 5-phase session, before the Quick session existed). The bookstore is fictional. **All participants are simulated personas; every persona answer is a Synthetic persona response, not customer evidence.**
 
 | | |
 |---|---|

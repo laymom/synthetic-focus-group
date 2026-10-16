@@ -1,166 +1,139 @@
-# Synthetic Focus Group (`/fgi`) for Claude Code
+# Synthetic Focus Group (`/fgi`): synthetic users for Claude Code
 
-**For product planners and designers who want to explore questions, risky assumptions, and edge cases before real user research: run a simulated 5-phase focus group on your MVP, mockup, or policy draft and get a report where every persona response is quoted verbatim, traceable by ID, and labeled as synthetic.**
+Try a concept on three synthetic users before you interview real ones.
+Each persona runs as a separate subagent and reacts before seeing the others.
+The moderator then confronts where they split and hands you 5 questions for real interviews.
 
-## Example
+## Example: Quick session
 
-Real run in Claude Code (simulated personas; see run notes). Stimulus: a neighborhood bookstore's weekday desk pass for remote workers, 5 personas, 30 isolated participant calls. One of the six themes from the report:
+A fictional bookstore wants to rent 6 window seats to remote workers. Excerpt from a real run:
 
-> **Theme 2: "First-come, no reservations" plus 6 seats is the operational variable most likely to kill repeat use — Synthetic persona response**
+> **Where they split**
+> 1. **"Calls only outside": P1 and P3 took opposite sides, and held after the probe.** P1-R1 "the 'calls only outside' rule is a dealbreaker for me, because on a typical Tuesday I have at least two scheduled video calls…" vs P3-R1 "the quiet rule about calls outside is the one thing I'd actually trust — that's the specific thing that ruins my current setup". Why: call volume splits "remote workers" into two different groups (AI assumption). After the probe: P1-R2 "my calls are scheduled, mid-morning or mid-afternoon, and they're the core of my workday"; P3-R2 "I have maybe one client check-in call a week, usually asynchronous Slack".
 >
-> **Utterances cited**: P1-S4-03, P1-S4-04, P1-S4-07, P1-S5-01, P1-S5-03, P3-S4-03, P3-S4-07, P3-S4-10, P3-S5-01, P3-S5-03, P4-S4-03, P4-S4-07, P4-S4-09, P4-S5-03, P5-S4-03.
->
-> "'First-come, no reservations' — I get the philosophy, but if I'm biking over with a client and there's no seat, that's a real problem for my situation. I'd want to ask the owner whether there's any way to get a heads-up when it's busy, even just a live seat count somewhere." — P3-S4-03 (Priya, Synthetic persona response)
->
-> "Point (f) — the live seat-count signal — is the one that would materially change my actual behavior, not just my opinion of the concept. I can absorb the no-reservations rule, I can tolerate the narrow window, but if I show up and the board says '6 of 6 taken' I have wasted a 25-minute commute and probably blown a deadline. A 9:30am post — even just a number on Instagram Stories — turns a gamble into a decision." — P1-S5-01 (Jess, Synthetic persona response)
->
-> **Question to ask real users (Open question)**: What fraction of prospective users would walk/bike/drive to the shop without a prior availability check — and of those turned away once, how many return?
->
-> **Evidence that would reject this hypothesis**: If the pilot's actual seat occupancy stays below ~70% during peak hours (10:00–12:00), arrival anxiety would be overstated and the no-reservations rule can stand on its own. Conversely, if pilot-week occupancy hits 100% on any day in the first two weeks, the signal is urgent.
+> **5 questions to ask real users in an interview** (2 of 5)
+> 2. "In the last 2 weeks, how many video or phone calls did you join during work hours, and where were you for each?" — **rejects A1 if:** call counts cluster into clearly different patterns across people with the same job label; "remote workers" is not one audience.
+> 3. "The last time you considered a coworking day pass or a café-work morning but didn't go — what stopped you?" — **rejects A2 if:** seat or space uncertainty is already the dominant reason people walk away from similar offers; a 6-seat first-come pass inherits the same blocker rather than solving it.
 
-Full transcript, report, dispatch log, and run notes (including the failures): [examples/bookstore-desk-pass-report.md](examples/bookstore-desk-pass-report.md)
+All quotes are Synthetic persona responses, not customer evidence.
+Full output, transcript, and dispatch log: [examples/bookstore-desk-pass-quick.md](examples/bookstore-desk-pass-quick.md).
 
 ## Install
 
-Claude Code only (needs subagents). Two parts: the skill, and the participant agent it dispatches. **Both are required.**
+Claude Code only. You need the skill and its participant agent.
 
-### 1. Install the skill
-
-With the [skills CLI](https://github.com/vercel-labs/skills), from your project folder:
+1. Install the skill from your project folder:
 
 ```bash
 npx skills add laymom/synthetic-focus-group --skill fgi -a claude-code
 ```
 
-This copies the whole repo folder (`SKILL.md`, `references/`, `agents/`) into `.claude/skills/fgi/` in the current project. Add `-g` to install for your user instead of one project.
-
-Or clone it by hand.
-
-macOS/Linux:
-
-```bash
-git clone https://github.com/laymom/synthetic-focus-group.git ~/.claude/skills/fgi
-```
-
-Windows PowerShell:
-
-```powershell
-git clone https://github.com/laymom/synthetic-focus-group.git "$HOME\.claude\skills\fgi"
-```
-
-### 2. Install the participant agent (required)
-
-`/fgi` dispatches one isolated subagent named `fgi-participant` per persona. Installing the skill puts `agents/fgi-participant.md` inside the skill folder, but Claude Code only registers agents from an `agents/` folder, so copy it there yourself. Without it, the skill is written to stop instead of running.
-
-Project install (after `npx skills add` without `-g`), macOS/Linux:
+2. Copy the agent into `.claude/agents/` (macOS/Linux):
 
 ```bash
 mkdir -p .claude/agents && cp .claude/skills/fgi/agents/fgi-participant.md .claude/agents/
 ```
 
-Project install, Windows PowerShell:
+On Windows PowerShell, run `New-Item -ItemType Directory -Force .claude\agents | Out-Null; Copy-Item .claude\skills\fgi\agents\fgi-participant.md .claude\agents\` instead.
+Installed for your user with `-g`? Use `~/.claude` (or `$HOME\.claude`) in place of `.claude`.
 
-```powershell
-New-Item -ItemType Directory -Force ".claude\agents" | Out-Null; Copy-Item ".claude\skills\fgi\agents\fgi-participant.md" ".claude\agents\"
-```
+**Check:** start a new session and type `/fgi`. If the agent is missing, it tells you how to fix it.
 
-User install (`-g` or the clone above), macOS/Linux:
-
-```bash
-mkdir -p ~/.claude/agents && cp ~/.claude/skills/fgi/agents/fgi-participant.md ~/.claude/agents/
-```
-
-User install, Windows PowerShell:
-
-```powershell
-New-Item -ItemType Directory -Force "$HOME\.claude\agents" | Out-Null; Copy-Item "$HOME\.claude\skills\fgi\agents\fgi-participant.md" "$HOME\.claude\agents\"
-```
-
-### 3. First run
-
-Start a new Claude Code session so the skill and agent register, then type `/fgi`. The first thing it does is propose a persona line-up and wait for your OK.
-
-## Input example
-
-Copy, paste, and replace the description with your own:
+## What to type
 
 ```text
-/fgi sleep "Onboarding for a sleep app, 3 screens. 1) Pick a goal: fall asleep faster, wake up less, or feel rested. 2) Connect a smartwatch or skip. 3) A 7-day plan with one evening habit per day."
+/fgi Quick session on concept.md. Goal: decide whether to pilot it for 4 weeks.
 ```
-
-Or point it at a file:
 
 ```text
-/fgi sleep ./mockups/sleep-onboarding.html
+/fgi Full session on ./mockups/sleep-onboarding.html
 ```
 
-The session and the report follow the language you write in.
+Quick is the default. Plain `/fgi <file or description>` runs a Quick session.
+Add your goal so the questions aim at your decision.
+The session follows the language you write in.
 
-## What happens
+## What you get
 
-1. **Recognize** the domain and the stimulus (text, an HTML file, or both).
-2. **Gate**: it recommends 4 personas from `references/personas-<domain>.md` (3 representative + 1 edge) and waits for your approval.
-3. **Optional pre-filter**: it scans the stimulus for obvious weaknesses and suggests fixes. This analysis is never shown to the personas.
-4. **Session**: one `fgi-participant` subagent per persona, per question, run in parallel. Subagents are stateless, so each call includes that persona's own earlier answers.
-5. **Report**: themes with verbatim quotes, utterance IDs, a question to ask real users and the evidence that would reject each theme, plus a full dispatch log. Saved to `fgi-reports/` in the current working directory.
-
-What the personas see, phase by phase:
-
-| Phase | Content | Personas see |
+| | Quick session (default) | Full session (on request) |
 |---|---|---|
-| ① Priming | rules, purpose, "please be honest" | the priming text |
-| ② Icebreak | self-introduction | priming + their own earlier answers |
-| ③ General | opinions about the domain | no stimulus, no other personas' words |
-| ④ Stimulus + deep-dive | first impression, one probe, one cross-reaction round | the stimulus; first answers are independent; other personas' words only in the cross-reaction round |
-| ⑤ Wrap-up | summary, ranking, final words | a neutral, unattributed list of points raised |
+| Personas | 3, each with a different current alternative, constraint, and motivation | 4–5, from a persona set or drafted for you |
+| Rounds | independent first reactions, then one probe on the split | 5 phases: priming, icebreak, general, stimulus with probe and cross-reaction, wrap-up |
+| Participant calls | about 6 | about 30 for 5 personas |
+| Output | one screen: where they split and why, 2–3 risky assumptions, 5 interview questions | themed report with verbatim quotes, real-user questions, and a dispatch log |
 
-Every persona utterance gets an ID such as `P2-S4-03` (persona 2, phase ④, third utterance), and themes cite those IDs. If the participant agent is missing, the skill is written to stop rather than pretend to run a multi-agent session, and to continue only if you explicitly ask, as a clearly labeled single-context fallback.
+Both start with one gate: you approve the personas.
+Both save a file in `fgi-reports/` with every answer verbatim and a dispatch log.
+Every persona utterance has an ID, such as `P2-R1`.
+Every claim carries a label: User-provided fact · Sourced fact · Real user research · AI assumption · Synthetic persona response · Approved decision · Open question.
 
-### Evidence labels
+## Why isolated personas
 
-Every claim in the report carries one of: User-provided fact · Sourced fact (with link) · Real user research · AI assumption · Synthetic persona response · Approved decision · Open question. Persona answers are always **Synthetic persona response**, even when the personas were built from real data.
+One chat that plays several users tends to give one blended voice.
+This tool keeps the personas apart, so differences can show up before anyone adjusts to anyone else.
 
-## How it differs
+| Design choice | What it guards against | Source |
+|---|---|---|
+| Each persona runs in its own subagent | Personas copying each other inside one context | Design choice. It does not fix the identity flattening in Wang et al. (2025) |
+| Everyone reacts before seeing anyone else | Early answers shaping later ones | Production-blocking research on human brainstorming groups: Diehl & Stroebe (1987); Nijstad et al. (2003) |
+| The moderator shows each side the other's words and asks what would change their mind | False consensus | Focus-group practice of inviting dissent: Krueger (1998); MAXQDA guide (secondary) |
+| Personas built on behavior, not demographics | Stereotyped answers from age or job | Wang et al. (2025) on flattened identity groups |
+| Questions ask what people did, with the answer that would reject an assumption | Collecting polite "I'd use it" answers | Design choice |
 
-- **From a single "act as a user" prompt**: each persona runs in its own subagent, the stimulus is held back until phase ④, first reactions are collected before anyone sees anyone else's, and disagreement is asked for on purpose.
-- **From a summary**: quotes stay verbatim with IDs, so you can trace every theme back to what was said and in which phase.
-- **From user research**: it is not user research. For each theme it tells you what to ask real people and what result would prove the theme wrong.
+This is design rationale. The cited research is about human groups or about the limits of LLM personas. None of it shows that this tool predicts real users.
 
-## Limits, cost, compatibility
+## Compared with plain chat
 
-- **Synthetic, not evidence.** The output is a set of hypotheses and questions. It never means validated, purchase intent confirmed, or launch approved. How often a point came up is not customer share, demand, or statistical representativeness.
-- **Isolation is a design choice.** Separate subagents reduce personas copying each other. They do not guarantee a persona keeps its identity, and they do not make answers predictive of real users.
-- **What research on synthetic participants found:**
-  - Bisbee et al. (2024): ChatGPT's persona answers matched survey averages, but had less variation than real respondents and shifted with small prompt-wording changes and over a 3-month period.
-  - Shrestha et al. (2025): GPT-4 synthetic participants roughly matched human responses on average, but matched less well outside WEIRD (Western, educated, industrialized, rich, democratic) countries and leaned more positive than humans.
-  - Wang et al. (2025): LLMs standing in for identity groups can misportray and flatten them; mitigation techniques reduced but did not remove this.
-- **Personas are Korean-context examples.** Only one set ships (`references/personas-sleep.md`, a sleep app, 8 fictional Korean personas). Duplicate and rewrite it for your domain. Build personas around behavior context, current alternatives, and constraints rather than demographics.
-- **Run size and time.** Every moderator question is one subagent call per persona; a session is capped at 6 rounds, so 5 personas make about 30 participant calls, and a run takes a while. The example run took 74 minutes wall clock because writing the 54 KB report in one go hit API retries and timed out (the skill now writes the report section by section). The example was produced before the 1.1.0 fixes; its run notes list the failures.
-- **Compatibility.** Claude Code only, because it needs subagents and the `fgi-participant` agent. Other agents may install the skill, but it is not built for them.
-- **When to run real research instead**, by goal: usability problems → moderated usability tests; demand → a demand test such as a smoke test or pre-orders; pricing → pricing research; policy → stakeholder or expert review.
+We asked plain Claude Code the same question about the same concept. Both outputs are in [examples/](examples/).
+
+- **Plain chat was broader and faster.** It listed more objections and 16 interview questions in under a minute.
+- **Only the Quick session showed a split.** One rule was a dealbreaker for one persona and the main draw for another.
+- **Only the Quick session probed the split.** Each persona named the fact behind its view.
+- **Only the Quick session tied questions to assumptions.** Each question names the answer that would reject one.
+
+Use plain chat for a checklist of objections. Use `/fgi` to find the question you had not prepared.
+
+## Limits
+
+- **Synthetic, not evidence.** Results are hypotheses and questions. They never mean validated or launch approved.
+- **Same model, many voices.** All personas run on one model, so answers can still converge.
+- **Counts are not shares.** Three personas agreeing is not "most customers".
+- **Research on synthetic participants:**
+  - Bisbee et al. (2024): persona answers matched survey averages but varied less than real people. They also shifted with small prompt changes and over three months.
+  - Shrestha et al. (2025): synthetic answers roughly matched humans on average. They matched less well outside the US. They also leaned more progressive and financially literate.
+  - Wang et al. (2025): LLMs standing in for identity groups can misportray and flatten them. Mitigations reduced this but did not remove it.
+- **Run size.** A full session makes about 30 participant calls. The Quick session is shorter.
+- **One example persona set.** `references/personas-sleep.md` is a Korean-context sleep app set. Copy it for your own domain.
+- **Claude Code only.** It needs subagents and the `fgi-participant` agent.
+- **When to use real research instead:** usability tests for usability, a smoke test or pre-orders for demand, pricing research for price.
 
 ## Related tools
 
-Small, independent tools by the same author. Use any of them on its own; none requires the others.
+Small, independent tools by the same author. Each works on its own.
 
-- [multi-agent-brainstorm](https://github.com/laymom/multi-agent-brainstorm) — explore and compare ideas from 5 perspectives
-- [synthetic-focus-group](https://github.com/laymom/synthetic-focus-group) — explore reactions and risky assumptions with simulated personas
-- [ai-prd-generator](https://github.com/laymom/ai-prd-generator) — turn an idea into a PRD with scope and acceptance criteria
-- [consulting-ux-strategy](https://github.com/laymom/consulting-ux-strategy) — audit flows, information architecture, and usability, then prioritize fixes
+- [multi-agent-brainstorm](https://github.com/laymom/multi-agent-brainstorm): explore and compare ideas from 5 perspectives
+- [synthetic-focus-group](https://github.com/laymom/synthetic-focus-group): find splits and risky assumptions with simulated personas
+- [ai-prd-generator](https://github.com/laymom/ai-prd-generator): turn an idea into a PRD with scope and acceptance criteria
+- [consulting-ux-strategy](https://github.com/laymom/consulting-ux-strategy): audit flows and usability, then prioritize fixes
 
-When passing output between them, keep the evidence labels (User-provided fact, Sourced fact, Real user research, AI assumption, Synthetic persona response, Approved decision, Open question). Simulated persona responses stay labeled as synthetic in every downstream document.
+When you pass output between them, keep the evidence labels. Persona answers stay labeled as synthetic everywhere.
 
-## Sources, license, changelog
+## Sources
 
-The session structure is adapted from focus-group practice. The LLM work is cited as inspiration or as evidence of limits, not as proof that this tool works.
-
+- Diehl, M., & Stroebe, W. (1987). Productivity loss in brainstorming groups: Toward the solution of a riddle. *Journal of Personality and Social Psychology, 53*(3), 497–509. [doi:10.1037/0022-3514.53.3.497](https://doi.org/10.1037/0022-3514.53.3.497)
+- Nijstad, B. A., Stroebe, W., & Lodewijkx, H. F. M. (2003). Production blocking and idea generation: Does blocking interfere with cognitive processes? *Journal of Experimental Social Psychology, 39*(6), 531–548. [doi:10.1016/S0022-1031(03)00040-4](https://doi.org/10.1016/S0022-1031(03)00040-4)
 - Krueger, R. A. (1998). *Moderating Focus Groups* (Focus Group Kit, Vol. 4). SAGE. [sk.sagepub.com](https://sk.sagepub.com/book/mono/moderating-focus-groups/toc)
-- Zhang, T., Zhang, X., Cools, R., & Simeone, A. L. (2024). Focus Agent: LLM-Powered Virtual Focus Group. *IVA '24*. [arXiv:2409.01907](https://arxiv.org/abs/2409.01907). Inspired the LLM-moderated focus-group format.
-- Ashkinaze, J., Fry, E., Edara, N., Gilbert, E., & Budak, C. (2025). Plurals: A System for Guiding LLMs via Simulated Social Ensembles. *CHI '25*. [doi:10.1145/3706598.3713675](https://doi.org/10.1145/3706598.3713675). Inspired persona agents deliberating under a moderator.
-- Bisbee, J., Clinton, J. D., Dorff, C., Kenkel, B., & Larson, J. M. (2024). Synthetic Replacements for Human Survey Data? The Perils of Large Language Models. *Political Analysis*, 32(4). [doi:10.1017/pan.2024.5](https://doi.org/10.1017/pan.2024.5)
+- MAXQDA. *Focus Group Research: The Complete Guide* (secondary; cites Krueger 1998 and Krueger & Casey 2015). [maxqda.com](https://www.maxqda.com/research-guides/focus-group-research)
+- Zhang, T., Zhang, X., Cools, R., & Simeone, A. L. (2024). Focus Agent: LLM-Powered Virtual Focus Group. *IVA '24*. [arXiv:2409.01907](https://arxiv.org/abs/2409.01907). Inspired the LLM-moderated format.
+- Ashkinaze, J., Fry, E., Edara, N., Gilbert, E., & Budak, C. (2025). Plurals: A System for Guiding LLMs via Simulated Social Ensembles. *CHI '25*. [doi:10.1145/3706598.3713675](https://doi.org/10.1145/3706598.3713675). Inspired persona agents under a moderator.
+- Bisbee, J., Clinton, J. D., Dorff, C., Kenkel, B., & Larson, J. M. (2024). Synthetic Replacements for Human Survey Data? The Perils of Large Language Models. *Political Analysis, 32*(4). [doi:10.1017/pan.2024.5](https://doi.org/10.1017/pan.2024.5)
 - Shrestha, P., Krpan, D., Koaik, F., Schnider, R., Sayess, D., & Binbaz, M. S. (2025). Beyond WEIRD: Can synthetic survey participants substitute for humans in global policy research? *Behavioral Science & Policy*. [doi:10.1177/23794607241311793](https://doi.org/10.1177/23794607241311793)
-- Wang, A., Morgenstern, J., & Dickerson, J. P. (2025). Large language models that replace human participants can harmfully misportray and flatten identity groups. *Nature Machine Intelligence*, 7. [doi:10.1038/s42256-025-00986-z](https://doi.org/10.1038/s42256-025-00986-z)
+- Wang, A., Morgenstern, J., & Dickerson, J. P. (2025). Large language models that replace human participants can harmfully misportray and flatten identity groups. *Nature Machine Intelligence, 7*. [doi:10.1038/s42256-025-00986-z](https://doi.org/10.1038/s42256-025-00986-z)
 
-MIT, see [LICENSE](LICENSE). Changes are listed in [CHANGELOG.md](CHANGELOG.md). Persona examples are fictional.
+More examples: [Quick session](examples/bookstore-desk-pass-quick.md) · [plain chat baseline](examples/bookstore-desk-pass-baseline-plain-chat.md) · [Full session (v1.1)](examples/bookstore-desk-pass-report.md). The bookstore is fictional.
+
+## License and changelog
+
+MIT, see [LICENSE](LICENSE). Changes are in [CHANGELOG.md](CHANGELOG.md). Persona examples are fictional.
 
 Built by **Sophia in Korea — a non-engineer who ships agents anyway.**

@@ -1,5 +1,7 @@
 # Discussion Guide Template — 5-phase FGI question skeleton
 
+For the **Full session** only. The Quick session uses the two questions in `SKILL.md` (Q2 and Q4).
+
 Based on: [Krueger, *Moderating Focus Groups* (Focus Group Kit, Vol. 4), SAGE, 1998](https://sk.sagepub.com/book/mono/moderating-focus-groups/toc) (see also the [MAXQDA focus-group guide, which cites Krueger 1998 and Krueger & Casey 2015](https://www.maxqda.com/research-guides/focus-group-research)).
 
 Ask the questions in the language of the user's request. The examples below are written in English.

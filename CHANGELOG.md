@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.2.0 — 2026-10-17
+
+### Added
+- **Quick session, now the default.** Three personas built on different current alternatives, constraints, and motivations. Each reacts to the stimulus alone first. The moderator finds where they split and runs one probe round on the split, showing each side the other's words verbatim with IDs. Output fits on one screen: where they split and why (with utterance IDs), 2–3 risky assumptions, and 5 interview questions, each with the answer that would reject an assumption. About 6 participant calls (at most 9)
+- **Step 0 install check.** If the `fgi-participant` agent is not available, the skill stops and prints the copy command for macOS/Linux and PowerShell
+- `quick-reaction` and `quick-probe` phases in `agents/fgi-participant.md`
+- Design rationale with sources: independent first reactions (production-blocking research: Diehl & Stroebe 1987, Nijstad et al. 2003) and inviting dissent (Krueger 1998; MAXQDA guide, secondary). Stated as rationale, not as evidence that the tool predicts users
+- Final check questions for the Quick session: persona attributes free of stimulus details, no override of the agent's answer length, IDs on both sides of each split, interview questions about past behavior, and "rejects if" answers that would really reject the assumption
+- Examples: `examples/bookstore-desk-pass-quick.md` (real Quick session run) and `examples/bookstore-desk-pass-baseline-plain-chat.md` (same concept in plain chat), with a comparison of what each produced
+
+### Changed
+- The 5-phase session is now the **Full session**, run when the user asks for depth. Its steps are unchanged
+- README rewritten in short sentences: identity first, Quick session excerpt, a two-step install with a check, what to type, Quick vs Full, why isolated personas (design choice, what it guards against, source), comparison with plain chat, limits
+- The previous example is retitled "Full session (v1.1)"
+- Removed the old example's run-time figure from the README
+
+### Fixed (found in the first Quick session run)
+- The moderator overrode the agent's 1–3 sentence limit and emotion labels in its dispatches. Dispatches now use the agent's input layout and set no length or format
+- Persona attributes repeated stimulus details (a price, the run days, the distance to the venue). Each attribute must now be writable without reading the stimulus
+- The output added sections beyond the template and ran past one screen. It now has fixed sections, an optional one-line "Where they agreed", and line limits
+
 ## 1.1.0 — 2026-10-12
 
 ### Added
